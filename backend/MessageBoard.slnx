@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="MessageBoard.Api/MessageBoard.Api.csproj" />
+  <Project Path="MessageBoard.Application/MessageBoard.Application.csproj" />
+  <Project Path="MessageBoard.Domain/MessageBoard.Domain.csproj" />
+  <Project Path="MessageBoard.Infrastructure/MessageBoard.Infrastructure.csproj" />
+  <Project Path="MessageBoard.Tests/MessageBoard.Tests.csproj" Id="5b211de4-03ed-4e8f-b705-ae474498e87d" />
+</Solution>

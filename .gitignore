@@ -1,0 +1,48 @@
+# Visual Studio local files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# .NET build output
+[Bb]in/
+[Oo]bj/
+artifacts/
+
+# NuGet package output
+*.nupkg
+*.snupkg
+
+# Test results and coverage
+[Tt]est[Rr]esult*/
+coverage/
+*.coverage
+*.coveragexml
+
+# Publish output and local deployment settings
+publish/
+*.pubxml.user
+*.publishsettings
+
+# JavaScript / TypeScript / Vite
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Private certificate containers
+*.pfx
+*.p12
+
+# Logs and operating system files
+*.log
+.DS_Store
+Thumbs.db
+Desktop.ini

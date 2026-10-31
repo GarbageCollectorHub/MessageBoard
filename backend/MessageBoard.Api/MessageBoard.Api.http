@@ -1,0 +1,6 @@
+@MessageBoard.Api_HostAddress = https://localhost:7238
+
+GET {{MessageBoard.Api_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
