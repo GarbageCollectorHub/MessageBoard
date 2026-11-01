@@ -7,20 +7,18 @@ namespace MessageBoard.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services,IConfiguration configuration)
     {
+        var connectionString = configuration.GetConnectionString("MessageBoard");
+
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new InvalidOperationException("Database connection string 'ConnectionStrings:MessageBoard' is not configured.");
+        }
+
         services.AddDbContext<MessageBoardDbContext>(options =>
         {
-            var connectionString = configuration.GetConnectionString("MessageBoard");
-
-            if (string.IsNullOrWhiteSpace(connectionString))
-            {
-                throw new InvalidOperationException("Database connection string 'ConnectionStrings:MessageBoard' is not configured.");
-            }
-
-            options.UseSqlServer(connectionString);
+            options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure());
         });
 
         return services;
