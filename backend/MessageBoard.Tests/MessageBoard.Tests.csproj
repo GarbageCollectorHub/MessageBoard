@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MessageBoard.Application\MessageBoard.Application.csproj" />
     <ProjectReference Include="..\MessageBoard.Domain\MessageBoard.Domain.csproj" />
   </ItemGroup>
 

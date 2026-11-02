@@ -1,4 +1,5 @@
 using MessageBoard.Api.Configuration;
+using MessageBoard.Application;
 using MessageBoard.Infrastructure;
 
 
@@ -12,6 +13,9 @@ builder.Services.AddApiLogging(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddApiDocumentation();
 builder.Services.AddApiErrorHandling();
+
+// Application services
+builder.Services.AddApplication();
 
 // Infrastructure services
 builder.Services.AddInfrastructure(builder.Configuration);
