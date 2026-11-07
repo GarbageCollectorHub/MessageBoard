@@ -1,4 +1,6 @@
-﻿using MessageBoard.Infrastructure.Persistence;
+﻿using MessageBoard.Application.Comments;
+using MessageBoard.Infrastructure.Persistence;
+using MessageBoard.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +22,8 @@ public static class DependencyInjection
         {
             options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure());
         });
+
+        services.AddScoped<ICommentRepository, CommentRepository>();
 
         return services;
     }
