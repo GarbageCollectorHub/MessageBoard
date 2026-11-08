@@ -1,5 +1,6 @@
 ﻿using MessageBoard.Application.Comments;
 using MessageBoard.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace MessageBoard.Infrastructure.Persistence.Repositories;
 
@@ -16,6 +17,11 @@ public class CommentRepository : ICommentRepository
     public void Add(Comment comment)
     {
         _dbContext.Comments.Add(comment);
+    }
+
+    public Task<bool> ExistsByIdAsync(long id, CancellationToken cancellationToken = default)
+    {
+        return _dbContext.Comments.AnyAsync(comment => comment.Id == id, cancellationToken);
     }
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
