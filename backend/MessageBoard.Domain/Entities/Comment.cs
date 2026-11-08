@@ -2,21 +2,21 @@
 
 public class Comment
 {
-    public long Id { get; set; }
+    public long Id { get; private set; }
 
-    public required string UserName { get; set; }
+    public required string UserName { get; init; }
 
-    public required string Email { get; set; }
+    public required string Email { get; init; }
 
-    public string? HomePage { get; set; }
+    public string? HomePage { get; init; }
 
-    public required string Text { get; set; }
+    public required string Text { get; init; }
 
-    public DateTimeOffset CreatedAtUtc { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset CreatedAtUtc { get; init; } = DateTimeOffset.UtcNow;
 
 
-    // Root comments have no parent.
-    public long? ParentId { get; set; }
+    // 
+    public long? ParentId { get; init; }
 
     public Comment? Parent { get; set; }
 

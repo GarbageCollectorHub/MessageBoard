@@ -45,6 +45,11 @@ public class CreateCommentRequestDtoValidator : AbstractValidator<CreateCommentR
             .WithMessage("Text must be {MaxLength} characters or fewer.")
             .Must(CommentHtmlValidator.IsValid)
             .WithMessage("Text contains invalid or unsupported markup. Allowed tags: a, code, i, strong.");
+
+        RuleFor(request => request.ParentId)
+            .GreaterThan(0)
+            .When(request => request.ParentId.HasValue)
+            .WithMessage("Parent ID must be greater than zero.");
     }
 
     private static bool IsValidUserName(string? userName)
