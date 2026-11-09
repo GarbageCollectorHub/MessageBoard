@@ -12,7 +12,7 @@ public class Comment
 
     public required string Text { get; init; }
 
-    public DateTimeOffset CreatedAtUtc { get; init; } = DateTimeOffset.UtcNow;
+    public required DateTimeOffset CreatedAtUtc { get; init; }
 
 
     // 

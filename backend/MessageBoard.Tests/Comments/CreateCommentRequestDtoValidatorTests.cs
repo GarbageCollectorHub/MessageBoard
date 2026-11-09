@@ -1,6 +1,5 @@
 ﻿using MessageBoard.Application.Comments;
 using MessageBoard.Application.Comments.Validation;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace MessageBoard.Tests.Comments;
 

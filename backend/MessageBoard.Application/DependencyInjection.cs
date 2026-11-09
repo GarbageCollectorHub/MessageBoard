@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MessageBoard.Application.Comments;
 using MessageBoard.Application.Comments.Validation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +10,8 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddValidatorsFromAssemblyContaining<CreateCommentRequestDtoValidator>();
+
+        services.AddScoped<CommentService>();
 
         return services;
     }

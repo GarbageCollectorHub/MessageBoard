@@ -6,8 +6,7 @@ namespace MessageBoard.Application.Comments;
 
 public sealed class CommentService(
                 ICommentRepository commentRepository, 
-                IValidator<CreateCommentRequestDto> validator,
-                TimeProvider timeProvider
+                IValidator<CreateCommentRequestDto> validator
                 )
 {
     public async Task<long> CreateAsync(CreateCommentRequestDto request, CancellationToken ct = default)
@@ -29,7 +28,7 @@ public sealed class CommentService(
             HomePage = request.HomePage,
             Text     = request.Text!,
             ParentId = request.ParentId,
-            CreatedAtUtc = timeProvider.GetUtcNow()
+            CreatedAtUtc = DateTimeOffset.UtcNow
         };
 
         commentRepository.Add(comment);

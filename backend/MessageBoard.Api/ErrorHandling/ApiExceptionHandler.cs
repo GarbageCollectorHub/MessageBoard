@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿
+using System.Diagnostics;
+using FluentValidation;
+using MessageBoard.Application.Comments.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,11 +21,35 @@ public class ApiExceptionHandler : IExceptionHandler
         Exception exception,
         CancellationToken cancellationToken)
     {
-        var statusCode = exception is BadHttpRequestException requestException
-            ? requestException.StatusCode
-            : StatusCodes.Status500InternalServerError;
-
         var traceId = Activity.Current?.Id ?? httpContext.TraceIdentifier;
+
+        // Возвращаем ошибки валидации по полям для отображения на клиенте
+        if (exception is ValidationException validationException)
+        {
+            var errors = validationException.Errors
+                .GroupBy(error => error.PropertyName)
+                .ToDictionary(
+                    group => group.Key,
+                    group => group.Select(error => error.ErrorMessage).ToArray());
+
+            await Results.ValidationProblem(
+                errors,
+                extensions: new Dictionary<string, object?>
+                {
+                    ["traceId"] = traceId
+                }
+            ).ExecuteAsync(httpContext);
+
+            return true;
+        }
+
+        var statusCode = exception switch
+        {
+            ParentCommentNotFoundException => StatusCodes.Status404NotFound,
+            BadHttpRequestException badRequest => badRequest.StatusCode,
+
+            _ => StatusCodes.Status500InternalServerError
+        };
 
         if (statusCode >= StatusCodes.Status500InternalServerError)
         {
@@ -34,22 +61,29 @@ public class ApiExceptionHandler : IExceptionHandler
                 traceId);
         }
 
+        // Не раскрываем внутренние ошибки клиенту: детали остаются в логах
         var problem = new ProblemDetails
         {
             Status = statusCode,
-            Title = statusCode >= StatusCodes.Status500InternalServerError
-                ? "Server error."
-                : "Invalid request.",
-            Detail = statusCode >= StatusCodes.Status500InternalServerError
-                ? "An unexpected error occurred."
-                : "The request could not be processed."
+            Title = exception switch
+            {
+                ParentCommentNotFoundException => "Parent comment not found.",
+                _ when statusCode >= 500 => "Server error.",
+
+                _ => "Invalid request."
+            },
+            Detail = exception switch
+            {
+                ParentCommentNotFoundException => "The specified parent comment does not exist.",
+                _ when statusCode >= 500 => "An unexpected error occurred.",
+
+                _ => "The request could not be processed."
+            }
         };
 
         problem.Extensions["traceId"] = traceId;
 
-        var response = Results.Problem(problem);
-
-        await response.ExecuteAsync(httpContext);
+        await Results.Problem(problem).ExecuteAsync(httpContext);
 
         return true;
     }
