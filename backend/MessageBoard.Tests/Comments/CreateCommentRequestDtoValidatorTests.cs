@@ -1,4 +1,4 @@
-﻿using MessageBoard.Application.Comments;
+﻿using MessageBoard.Application.Comments.DTOs;
 using MessageBoard.Application.Comments.Validation;
 
 namespace MessageBoard.Tests.Comments;

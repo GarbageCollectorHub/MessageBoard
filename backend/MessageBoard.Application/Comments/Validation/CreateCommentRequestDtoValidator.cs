@@ -1,5 +1,6 @@
 ﻿using System.Net.Mail;
 using FluentValidation;
+using MessageBoard.Application.Comments.DTOs;
 using MessageBoard.Domain.Constants;
 
 namespace MessageBoard.Application.Comments.Validation;

@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿
+
+using MessageBoard.Application.Comments.DTOs;
+using System.Text.Json.Nodes;
 
 namespace MessageBoard.Api.Configuration;
 
@@ -8,10 +9,33 @@ public static class OpenApiConfiguration
 {
     public static IServiceCollection AddApiDocumentation(this IServiceCollection services)
     {
-        services.AddOpenApi();
+
+        services.AddOpenApi(options =>
+        {
+            options.AddSchemaTransformer((schema, context, ct) =>
+            {
+                if (context.JsonTypeInfo.Type == typeof(CreateCommentRequestDto))
+                {
+                    schema.Examples =
+                    [
+                        new JsonObject
+                {
+                    ["userName"] = "TestUser",
+                    ["email"] = "test@example.com",
+                    ["homePage"] = "https://test-example.com",
+                    ["text"] = "Hello World!",
+                    ["parentId"] = null
+                }
+                    ];
+                }
+
+                return Task.CompletedTask;
+            });
+        });
 
         return services;
     }
+
 
     public static WebApplication UseApiDocumentation(this WebApplication app)
     {
@@ -29,4 +53,5 @@ public static class OpenApiConfiguration
 
         return app;
     }
+
 }

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MessageBoard.Application.Comments.DTOs;
 using MessageBoard.Application.Comments.Exceptions;
 using MessageBoard.Domain.Entities;
 
@@ -9,12 +10,13 @@ public sealed class CommentService(
                 IValidator<CreateCommentRequestDto> validator
                 )
 {
-    public async Task<long> CreateAsync(CreateCommentRequestDto request, CancellationToken ct = default)
+    public async Task<CommentResponseDto> CreateAsync(CreateCommentRequestDto request, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(request);
 
         await validator.ValidateAndThrowAsync(request, ct);
 
+        // Проверяем существование родителя, чтобы вернуть 404, а не ошибку внешнего ключа из БД
         if (request.ParentId is long parentId && 
             !await commentRepository.ExistsByIdAsync(parentId, ct))
         {
@@ -34,7 +36,14 @@ public sealed class CommentService(
         commentRepository.Add(comment);
         await commentRepository.SaveChangesAsync(ct);
 
-        return comment.Id;
+        return new CommentResponseDto(
+            comment.Id,
+            comment.UserName,
+            comment.HomePage,
+            comment.Text,
+            comment.ParentId,
+            comment.CreatedAtUtc);
+
     }
 
 
