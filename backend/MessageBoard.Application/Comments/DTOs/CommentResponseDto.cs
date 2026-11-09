@@ -1,4 +1,4 @@
-﻿namespace MessageBoard.Application.Comments;
+﻿namespace MessageBoard.Application.Comments.DTOs;
 
 
 
