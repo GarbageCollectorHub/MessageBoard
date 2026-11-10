@@ -36,7 +36,7 @@ public class CreateCommentRequestDtoValidator : AbstractValidator<CreateCommentR
             .MaximumLength(CommentLimits.HomePageMaxLength)
             .WithMessage("Home page must be {MaxLength} characters or fewer.")
             .Must(IsValidHomePage)
-            .WithMessage("Enter a valid HTTP or HTTPS URL.");
+            .WithMessage("Enter a valid HTTP or HTTPS URL without a login or password.");
 
         // Обязательное поле. Пробелы не считаются содержимым.
         RuleFor(request => request.Text)

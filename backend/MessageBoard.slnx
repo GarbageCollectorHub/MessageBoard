@@ -3,6 +3,9 @@
     <File Path="../docs/DECISIONS.md" />
     <File Path="../docs/secrets.sample.json" />
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="../README.md" />
+  </Folder>
   <Project Path="MessageBoard.Api/MessageBoard.Api.csproj" />
   <Project Path="MessageBoard.Application/MessageBoard.Application.csproj" />
   <Project Path="MessageBoard.Domain/MessageBoard.Domain.csproj" />

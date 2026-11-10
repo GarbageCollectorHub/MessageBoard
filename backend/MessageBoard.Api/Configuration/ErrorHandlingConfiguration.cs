@@ -1,7 +1,7 @@
-﻿
-using MessageBoard.Api.ErrorHandling;
+﻿using MessageBoard.Api.ErrorHandling;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Diagnostics;
 
 namespace MessageBoard.Api.Configuration;
 
@@ -36,7 +36,8 @@ public static class ErrorHandlingConfiguration
                     Title = "One or more validation errors occurred."
                 };
 
-                problem.Extensions["traceId"] = context.HttpContext.TraceIdentifier;
+                problem.Extensions["traceId"] = 
+                    Activity.Current?.Id ?? context.HttpContext.TraceIdentifier;
 
                 return new BadRequestObjectResult(problem);
             };

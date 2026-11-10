@@ -1,6 +1,4 @@
-﻿
-
-using MessageBoard.Application.Comments.DTOs;
+﻿using MessageBoard.Application.Comments.DTOs;
 using System.Text.Json.Nodes;
 
 namespace MessageBoard.Api.Configuration;

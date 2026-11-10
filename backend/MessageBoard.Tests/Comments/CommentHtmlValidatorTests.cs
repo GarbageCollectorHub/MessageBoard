@@ -1,5 +1,4 @@
-﻿
-using MessageBoard.Application.Comments.Validation;
+﻿using MessageBoard.Application.Comments.Validation;
 
 namespace MessageBoard.Tests.Comments;
 

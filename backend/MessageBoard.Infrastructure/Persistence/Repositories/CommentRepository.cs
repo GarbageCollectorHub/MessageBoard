@@ -19,14 +19,14 @@ public class CommentRepository : ICommentRepository
         _dbContext.Comments.Add(comment);
     }
 
-    public Task<bool> ExistsByIdAsync(long id, CancellationToken cancellationToken = default)
+    public Task<bool> ExistsByIdAsync(long id, CancellationToken ct = default)
     {
-        return _dbContext.Comments.AnyAsync(comment => comment.Id == id, cancellationToken);
+        return _dbContext.Comments.AnyAsync(comment => comment.Id == id, ct);
     }
 
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public Task<int> SaveChangesAsync(CancellationToken ct = default)
     {
-        return _dbContext.SaveChangesAsync(cancellationToken);
+        return _dbContext.SaveChangesAsync(ct);
     }
 
 }

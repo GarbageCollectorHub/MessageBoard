@@ -32,6 +32,12 @@ backend/
 
 You'll need the .NET 10 SDK, SQL Server or Azure SQL, and the `dotnet-ef` tool.
 
+Install `dotnet-ef` if it is not installed:
+
+```bash
+dotnet tool install --global dotnet-ef --version 10.0.14
+```
+
 From the repository root, open the `backend` directory:
 
 ```bash
@@ -58,6 +64,13 @@ Run the tests from `backend`:
 ```bash
 dotnet test MessageBoard.slnx
 ```
+
+## Comment Markup
+
+Allowed tags: `a`, `code`, `i`, `strong`. Links support `href` (HTTP/HTTPS) and `title`; other tags have no attributes.
+Tags must be correctly closed and nested. URLs must not contain a login or password.
+
+Write special characters as XML entities: `&amp;` for `&` and `&lt;` for `<` in text and attribute values.
 
 ## Documentation
 

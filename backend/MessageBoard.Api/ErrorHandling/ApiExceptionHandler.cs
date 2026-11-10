@@ -1,5 +1,4 @@
-﻿
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using FluentValidation;
 using MessageBoard.Application.Comments.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
@@ -19,7 +18,7 @@ public class ApiExceptionHandler : IExceptionHandler
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
-        CancellationToken cancellationToken)
+        CancellationToken ct)
     {
         var traceId = Activity.Current?.Id ?? httpContext.TraceIdentifier;
 
