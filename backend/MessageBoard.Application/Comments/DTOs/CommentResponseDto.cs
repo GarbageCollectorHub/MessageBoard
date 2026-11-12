@@ -8,5 +8,6 @@ public sealed record CommentResponseDto(
         string? HomePage,
         string  Text,
         long?   ParentId,
-        DateTimeOffset CreatedAtUtc
+        DateTimeOffset CreatedAtUtc,
+        int ReplyCount = 0
     );
