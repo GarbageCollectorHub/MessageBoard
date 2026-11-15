@@ -1,4 +1,5 @@
-﻿using MessageBoard.Domain.Entities;
+﻿using MessageBoard.Application.Comments.DTOs;
+using MessageBoard.Domain.Entities;
 
 namespace MessageBoard.Application.Comments;
 
@@ -10,5 +11,7 @@ public interface ICommentRepository
 
     Task<int> SaveChangesAsync(CancellationToken ct = default);
 
+    Task<CommentPageResponseDto> GetRootPageAsync(GetCommentsRequestDto request, 
+        CancellationToken ct = default);
 
 }

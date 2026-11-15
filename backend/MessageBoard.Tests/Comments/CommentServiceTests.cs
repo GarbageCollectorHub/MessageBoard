@@ -80,5 +80,10 @@ public class CommentServiceTests
             return Task.FromResult(1);
         }
 
+        public Task<CommentPageResponseDto> GetRootPageAsync(GetCommentsRequestDto request, CancellationToken ct = default)
+        {
+            throw new NotSupportedException("Reading comments is not used in these tests.");
+        }
+
     }
 }
