@@ -61,20 +61,51 @@ public class CommentRepository : ICommentRepository
 
         int skip = (request.PageNumber - 1) * CommentPagination.PageSize;
 
-        var items = await sortedQuery
-            .Skip(skip)
-            .Take(CommentPagination.PageSize)
-            .Select(comment => new CommentResponseDto(
-                comment.Id,
-                comment.UserName,
-                comment.HomePage,
-                comment.Text,
-                comment.ParentId,
-                comment.CreatedAtUtc,
-                comment.Replies.Count()))
-            .ToListAsync(ct);
+        IQueryable<Comment> pageQuery = sortedQuery.Skip(skip).Take(CommentPagination.PageSize);
+        var items = await SelectCommentResponses(pageQuery).ToListAsync(ct);
 
         return new CommentPageResponseDto(items, request.PageNumber, CommentPagination.PageSize, totalCount);
+    }
+
+
+    public async Task<IReadOnlyList<CommentResponseDto>> GetRepliesAsync(
+        long parentId, CommentReplyCursor? cursor, int limit, CancellationToken ct = default)
+    {
+        IQueryable<Comment> repliesQuery = _dbContext.Comments
+            .AsNoTracking()
+            .Where(comment => comment.ParentId == parentId);
+
+        if (cursor is not null)
+        {
+            DateTimeOffset lastReplyTime = cursor.CreatedAtUtc;
+            long lastReplyId = cursor.Id;
+
+            // Берём replies после последнего, который уже вернули клиенту
+            // При одинаковом CreatedAtUtc replies идут по возрастанию Id
+            repliesQuery = repliesQuery.Where(comment =>
+                comment.CreatedAtUtc > lastReplyTime
+                || (comment.CreatedAtUtc == lastReplyTime && comment.Id > lastReplyId));
+        }
+
+        IQueryable<Comment> batchQuery = repliesQuery
+            .OrderBy(comment => comment.CreatedAtUtc)
+            .ThenBy(comment => comment.Id)
+            .Take(limit);
+
+        return await SelectCommentResponses(batchQuery).ToListAsync(ct);
+    }
+
+
+    private static IQueryable<CommentResponseDto> SelectCommentResponses(IQueryable<Comment> query)
+    {
+        return query.Select(comment => new CommentResponseDto(
+            comment.Id,
+            comment.UserName,
+            comment.HomePage,
+            comment.Text,
+            comment.ParentId,
+            comment.CreatedAtUtc,
+            comment.Replies.Count()));
     }
 
 }

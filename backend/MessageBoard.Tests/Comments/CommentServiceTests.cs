@@ -2,6 +2,7 @@
 using MessageBoard.Application.Comments;
 using MessageBoard.Application.Comments.DTOs;
 using MessageBoard.Application.Comments.Exceptions;
+using MessageBoard.Application.Comments.Queries;
 using MessageBoard.Application.Comments.Validation;
 using MessageBoard.Domain.Entities;
 
@@ -95,5 +96,10 @@ public class CommentServiceTests
             throw new NotSupportedException("Reading comments is not used in these tests.");
         }
 
+        public Task<IReadOnlyList<CommentResponseDto>> GetRepliesAsync(
+            long parentId, CommentReplyCursor? cursor, int limit, CancellationToken ct = default)
+        {
+            throw new NotSupportedException("Reading replies is not used in these tests.");
+        }
     }
 }
