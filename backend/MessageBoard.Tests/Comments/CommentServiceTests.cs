@@ -15,7 +15,12 @@ public class CommentServiceTests
     public async Task CreateAsync_InvalidRequest_DoesNotSaveComment()
     {
         var repository = new TestCommentRepository();
-        var service = new CommentService(repository, new CreateCommentRequestDtoValidator());
+
+        var service = new CommentService(
+                repository,
+                new CreateCommentRequestDtoValidator(),
+                new GetCommentsRequestDtoValidator());
+
         var request = CreateValidRequest() with
         {
             UserName = "Test User"
@@ -34,7 +39,12 @@ public class CommentServiceTests
     public async Task CreateAsync_ParentNotFound_DoesNotSaveComment()
     {
         var repository = new TestCommentRepository();
-        var service = new CommentService(repository, new CreateCommentRequestDtoValidator());
+
+        var service = new CommentService(
+                repository,
+                new CreateCommentRequestDtoValidator(),
+                new GetCommentsRequestDtoValidator());
+
         var request = CreateValidRequest() with
         {
             ParentId = 123

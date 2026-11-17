@@ -7,9 +7,21 @@ namespace MessageBoard.Application.Comments;
 
 public sealed class CommentService(
                 ICommentRepository commentRepository, 
-                IValidator<CreateCommentRequestDto> validator
+                IValidator<CreateCommentRequestDto> validator,
+                IValidator<GetCommentsRequestDto> getCommentsValidator
                 )
 {
+
+    public async Task<CommentPageResponseDto> GetRootPageAsync(GetCommentsRequestDto request, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        await getCommentsValidator.ValidateAndThrowAsync(request, ct);
+
+        return await commentRepository.GetRootPageAsync(request, ct);
+    }
+
+
     public async Task<CommentResponseDto> CreateAsync(CreateCommentRequestDto request, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(request);
