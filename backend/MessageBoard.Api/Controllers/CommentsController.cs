@@ -21,6 +21,19 @@ public sealed class CommentsController(CommentService commentService) : Controll
     }
 
 
+    [HttpGet("{parentId}/replies")]
+    [EndpointDescription("Returns up to 10 direct replies, oldest first. Pass nextCursor as cursor to load more.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)] // parentId not found
+    public async Task<ActionResult<CommentRepliesResponseDto>> GetReplies([FromRoute] long parentId, [FromQuery] string? cursor, CancellationToken ct)
+    {
+        CommentRepliesResponseDto response = await commentService.GetRepliesAsync(parentId, cursor, ct);
+
+        return Ok(response);
+    }
+
+
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
