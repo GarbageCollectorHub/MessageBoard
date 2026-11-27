@@ -111,7 +111,7 @@ public sealed class CommentService(
             return null;
         }
 
-        // Клиент передаёт nextCursor из предыдущего ответа API. Например: "?cursor=638712864000000000.42."
+        // Клиент передаёт nextCursor из предыдущего ответа API. Например: "?cursor=638712864000000000.42"
         // До точки — дата последнего показанного комментария, после точки — его Id (42)
         string[] parts = cursor.Split('.', 2);
 
